@@ -1,0 +1,46 @@
+regoRules:
+  main.rego: |+
+    package system
+    import data.kubernetes.admission
+
+    main = {
+      "apiVersion": "admission.k8s.io/v1beta1",
+      "kind": "AdmissionReview",
+      "response": response,
+    }
+
+    default response = {"allowed": true}
+
+    response = {
+        "allowed": false,
+        "status": {
+            "reason": reason,
+        },
+    } {
+        reason = concat(", ", admission.deny)
+        reason != ""
+    }
+
+  labels.rego: |+
+    package kubernetes.admission
+
+    deny[msg] {
+      input.request.kind.kind == "Deployment"
+      input.request.operation = "CREATE"
+      not input.request.object.metadata.labels.costCenter
+      msg = "please set the costCenter label into the Deployment resource"
+    }
+
+    deny[msg] {
+      input.request.kind.kind == "Deployment"
+      input.request.operation = "CREATE"
+      not input.request.object.metadata.labels.environment
+      msg = "please set the environment label, with the respective value that can be stage, production into the Deployment resource"
+    }
+
+    deny[msg] {
+      input.request.kind.kind == "Deployment"
+      input.request.operation = "CREATE"
+      not input.request.object.metadata.labels.app
+      msg = "please set the app label, with the name app value into the Deployment"
+    }

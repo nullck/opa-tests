@@ -1,0 +1,60 @@
+{
+    "apiVersion": "extensions/v1beta1",
+    "kind": "Deployment",
+    "metadata": {
+        "labels": {
+            "app": "opa"
+        },
+        "name": "opa",
+        "namespace": "opa",
+        "resourceVersion": "195226",
+        "selfLink": "/apis/extensions/v1beta1/namespaces/opa/deployments/opa",
+        "uid": "4aa8db28-fa84-11e9-9efa-da1df7e0b25a"
+    },
+    "spec": {
+        "replicas": 1,
+        "selector": {
+            "matchLabels": {
+                "app": "opa"
+            }
+        },
+        "strategy": {
+            "rollingUpdate": {
+                "maxSurge": 1,
+                "maxUnavailable": 1
+            },
+            "type": "RollingUpdate"
+        },
+        "template": {
+            "metadata": {
+                "creationTimestamp": null,
+                "labels": {
+                    "app": "opa"
+                },
+                "name": "opa"
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "image": "openpolicyagent/opa:0.10.5",
+                        "imagePullPolicy": "IfNotPresent",
+                        "name": "opa",
+                        "resources": {}
+                    },
+                    {
+                        "args": [
+                            "--replicate-cluster=v1/namespaces",
+                            "--replicate=extensions/v1beta1/ingresses"
+                        ],
+                        "image": "openpolicyagent/kube-mgmt:0.6",
+                        "imagePullPolicy": "IfNotPresent",
+                        "name": "kube-mgmt",
+                        "resources": {},
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File"
+                    }
+                ]
+            }
+        }
+    }
+}
