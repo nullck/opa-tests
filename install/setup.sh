@@ -22,7 +22,7 @@ elif [ "$1" == "opa" ]; then
 
   ## rego rules
   $CREATE_REGO labels -n opa --from-file=../examples/labels.rego
-  $CREATE_REGO protect-namespace -n opa --from-file=../examples/protect-namespace-alternative-version.rego
+  $CREATE_REGO protect-namespace -n opa --from-file=../examples/protect-namespace.rego
   $CREATE_REGO pod-security -n opa --from-file=../examples/root.rego
 elif [ "$1" == "destroy" ]; then
   kind delete cluster --name ${CLUSTER_NAME}

@@ -10,16 +10,8 @@ has_key(x, k) {
 
 kind = input.request.kind.kind
 
-is_deployment {
-  kind = "Deployment"
-}
-
-is_daemonset {
-  kind = "DaemonSet"
-}
-
-is_statefulset {
-  kind = "StatefulSet"
+is_not_pod {
+  re_match(`(Deployment|DaemonSet|StatefulSet)`, kind)
 }
 
 is_pod {
@@ -27,17 +19,7 @@ is_pod {
 }
 
 pods[podSpec] {
-    is_deployment
-    podSpec = input.request.object.spec.template
-}
-
-pods[podSpec] {
-    is_daemonset
-    podSpec = input.request.object.spec.template
-}
-
-pods[podSpec] {
-    is_statefulset
+    is_not_pod
     podSpec = input.request.object.spec.template
 }
 
