@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   labels:
     environment: lolo
+    costCenter: lolo
+    app: lolo
   name: ydf-app-demo-stage
   namespace: qa
 spec:
@@ -18,12 +20,14 @@ spec:
     type: RollingUpdate
   template:
     metadata:
+      annotations:
+        podSecure: "true"
       labels:
         app.kubernetes.io/instance: ydf-app-demo-stage
         app.kubernetes.io/name: ydf-app-demo
     spec:
       containers:
-      - image: 827942265855.dkr.ecr.us-east-1.amazonaws.com/circle_helm_test:6043ca9d
+      - image: nullck/kube-psp-python-app:1593549771
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3

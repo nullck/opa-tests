@@ -1,0 +1,41 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    environment: teste
+    costCenter: teste
+    app: teste
+  name: app-demo-stage
+  namespace: qa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      environment: teste
+      costCenter: teste
+      app: teste
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        environment: teste
+        costCenter: teste
+        app: teste
+    spec:
+      securityContext:
+        runAsNonRoot: true
+      containers:
+      - image: busybox
+        imagePullPolicy: IfNotPresent
+        name: app-demo
+        resources:
+          limits:
+            cpu: 100m
+            memory: 100Mi
+          requests:
+            cpu: 50m
+            memory: 80Mi

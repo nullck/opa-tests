@@ -1,0 +1,29 @@
+https://play.openpolicyagent.org/p/xojhg0vgwl
+
+
+https://play.openpolicyagent.org/p/bftI4MKMzz
+
+
+
+package kubernetes.validating.psp_root
+
+
+deny [msg] {
+     input.request.object.spec.template.metadata.annotations.podSecure
+     not input.request.object.spec.template.spec.securityContext
+     msg := "SecurityContext must be configured"
+}
+
+deny [msg] {
+     input.request.object.spec.template.metadata.annotations.podSecure
+     value := input.request.object.spec.template.spec.securityContext.runAsNonRoot
+     not (value == true)
+     msg := sprintf("The securityContext: runAsNonRoot, Must be set with true value; found `%v`", [value])
+}
+
+deny [msg] {
+     input.request.object.spec.template.metadata.annotations.podSecure
+     value := input.request.object.spec.template.spec.securityContext.allowPrivilegeEscalation
+     not (value == false)
+     msg := sprintf("The securityContext: allowPrivilegeEscalation, Must be set with false value; found `%v`", [value])
+}

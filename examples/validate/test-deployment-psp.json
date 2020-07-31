@@ -1,0 +1,84 @@
+{
+    "kind": "AdmissionReview",
+    "request": {
+        "kind": {
+          "kind": "Deployment"
+        },
+        "object": {
+          "metadata": {
+              "annotations": {
+                  "deployment.kubernetes.io/revision": "1"
+              },
+              "creationTimestamp": "2020-06-26T20:01:10Z",
+              "generation": 1,
+              "labels": {
+                  "app": "teste",
+                  "costCenter": "teste",
+                  "environment": "teste"
+              },
+              "name": "app-demo-stage",
+              "namespace": "qa",
+              "resourceVersion": "3204",
+              "selfLink": "/apis/extensions/v1beta1/namespaces/qa/deployments/app-demo-stage",
+              "uid": "c779c4b4-b7e7-11ea-84f7-0242ac120003"
+          },
+          "spec": {
+              "progressDeadlineSeconds": 2147483647,
+              "replicas": 1,
+              "revisionHistoryLimit": 2147483647,
+              "selector": {
+                  "matchLabels": {
+                      "app": "teste",
+                      "costCenter": "teste",
+                      "environment": "teste"
+                  }
+              },
+              "strategy": {
+                  "rollingUpdate": {
+                      "maxSurge": "25%",
+                      "maxUnavailable": "25%"
+                  },
+                  "type": "RollingUpdate"
+              },
+              "template": {
+                  "metadata": {
+                      "creationTimestamp": null,
+                      "labels": {
+                          "app": "teste",
+                          "costCenter": "teste",
+                          "environment": "teste"
+                      }
+                  },
+                  "spec": {
+                      "containers": [
+                          {
+                              "image": "busybox",
+                              "imagePullPolicy": "IfNotPresent",
+                              "name": "app-demo",
+                              "resources": {
+                                  "limits": {
+                                      "cpu": "100m",
+                                      "memory": "100Mi"
+                                  },
+                                  "requests": {
+                                      "cpu": "50m",
+                                      "memory": "80Mi"
+                                  }
+                              },
+                              "terminationMessagePath": "/dev/termination-log",
+                              "terminationMessagePolicy": "File"
+                          }
+                      ],
+                      "dnsPolicy": "ClusterFirst",
+                      "restartPolicy": "Always",
+                      "schedulerName": "default-scheduler",
+                      "securityContext": {
+                          "runAsNonRoot": true
+                      },
+                      "terminationGracePeriodSeconds": 30
+                  }
+              }
+          }
+    }
+  }
+}

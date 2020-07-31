@@ -3,7 +3,9 @@ kind: Deployment
 metadata:
   labels:
     environment: lolo
-  name: ydf-app-demo-stage
+    costCenter: lolo
+    app: lolo
+  name: ydf-app-demo-non-root-stage
   namespace: qa
 spec:
   replicas: 1
@@ -21,9 +23,16 @@ spec:
       labels:
         app.kubernetes.io/instance: ydf-app-demo-stage
         app.kubernetes.io/name: ydf-app-demo
+        environment: lolo
+        costCenter: lolo
+        app: lolo
+      annotations:
+        podSecure: "true"
     spec:
+      securityContext:
+        runAsNonRoot: true
       containers:
-      - image: 827942265855.dkr.ecr.us-east-1.amazonaws.com/circle_helm_test:6043ca9d
+      - image: nullck/kube-psp-python-app:1593549771
         imagePullPolicy: IfNotPresent
         livenessProbe:
           failureThreshold: 3
@@ -55,3 +64,6 @@ spec:
           requests:
             cpu: 50m
             memory: 80Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+
